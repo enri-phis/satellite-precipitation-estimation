@@ -1,0 +1,11 @@
+{
+  "n_pixels_final": 61378,
+  "rain_pixels": 1855,
+  "norain_pixels": 59523,
+  "day_pixels": 0,
+  "night_pixels": 61378,
+  "sea_pixels": 8974,
+  "land_pixels": 25580,
+  "summer_pixels": 0,
+  "winter_pixels": 61378
+}
