@@ -1,0 +1,21 @@
+# Large data and generated outputs
+data/
+outputs/
+results/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Notebooks cache
+.ipynb_checkpoints/
+
+# Temp files
+_tmp_*.py
+*.tmp
+
+# Virtual environments
+.venv/
+venv/
+env/

@@ -1,47 +1,47 @@
-# Pipeline ML per Classificazione dell'Intensita della Precipitazione da SEVIRI con Validazione IMERG
+# ML Pipeline for Precipitation Intensity Classification from SEVIRI with IMERG Validation
 
-## 1. Titolo Progetto
-Pipeline ML per Classificazione dell'Intensita della Precipitazione da SEVIRI (MSG) con Validazione Finale su IMERG.
+## 1. Project Title
+ML Pipeline for Precipitation Intensity Classification from SEVIRI (MSG) with Final Validation on IMERG.
 
 ## 2. Project Overview
-Questo repository implementa una pipeline end-to-end di machine learning per classificare l'intensita della precipitazione a partire da osservazioni satellitari SEVIRI (MSG), con validazione esterna su prodotto IMERG.  
-Il progetto integra preprocessing geospaziale, feature engineering, modellazione supervisionata e validazione quantitativa, con struttura modulare e ri-eseguibile per esperimenti su larga scala.
+This repository implements an end-to-end machine learning pipeline for classifying precipitation intensity from SEVIRI (MSG) satellite observations, with external validation using the IMERG product.  
+The project integrates geospatial preprocessing, feature engineering, supervised modeling, and quantitative validation, with a modular and re-executable structure for large-scale experiments.
 
 ## 3. Problem Statement
-Stimare correttamente l'intensita della precipitazione da dati satellitari e un problema rilevante per monitoraggio meteo, gestione del rischio idrologico e analisi climatica.  
-I dati radiometrici satellitari sono informativi ma indiretti, rumorosi e fortemente sbilanciati (molti pixel asciutti, pochi eventi intensi).  
-Questo progetto affronta il problema costruendo un workflow completo che:
+Accurately estimating precipitation intensity from satellite data is a relevant problem for weather monitoring, hydrological risk management, and climate analysis.  
+Satellite radiometric data are informative but indirect, noisy, and highly imbalanced (many dry pixels, few intense events).  
+This project addresses the problem by building a complete workflow that:
 
-- trasforma dati grezzi SEVIRI in predizioni multi-classe;
-- riduce il bias dovuto allo sbilanciamento con bilanciamento stratificato;
-- verifica la robustezza delle predizioni contro un riferimento indipendente (IMERG).
+- transforms raw SEVIRI data into multi-class predictions;
+- reduces bias due to class imbalance through stratified balancing;
+- verifies prediction robustness against an independent reference (IMERG).
 
 ## 4. Methodology / Pipeline
-La pipeline e organizzata in step modulari:
+The pipeline is organized into modular steps:
 
-1. Preprocessing dati satellitari  
-   Caricamento, conversione e filtro geografico delle osservazioni SEVIRI.
+1. Satellite Data Preprocessing  
+   Loading, conversion, and geographic filtering of SEVIRI observations.
 
-2. Generazione maschere  
-   Costruzione di maschere giorno/notte, stagione e terra/mare.
+2. Mask Generation  
+   Construction of day/night, seasonal, and land/sea masks.
 
-3. Analisi distribuzionale  
-   Istogrammi diagnostici e analisi esplorativa delle distribuzioni per canale e contesto.
+3. Distributional Analysis  
+   Diagnostic histograms and exploratory analysis of distributions by channel and context.
 
-4. Bilanciamento dataset multi-classe  
-   Undersampling stratificato per configurazioni a 4, 5, 7 e 15 classi.
+4. Multi-class Dataset Balancing  
+   Stratified undersampling for 4, 5, 7, and 15-class configurations.
 
-5. Feature engineering  
-   Generazione di feature da canali grezzi, differenze, statistiche spaziali locali, gradienti, entropia e Laplaciano.
+5. Feature Engineering  
+   Feature generation from raw channels, differences, local spatial statistics, gradients, entropy, and Laplacian.
 
-6. Training modelli  
-   Addestramento Random Forest per classificazione multi-classe e regressione XGBoost per analisi dedicate.
+6. Model Training  
+   Random Forest training for multi-class classification and XGBoost regression for dedicated analyses.
 
-7. Validazione finale contro IMERG  
-   Confronto predizioni-riferimento con metriche standard (accuracy, precision, recall, F1, HSS) e artefatti diagnostici.
+7. Final Validation Against IMERG  
+   Prediction-reference comparison with standard metrics (accuracy, precision, recall, F1, HSS) and diagnostic artifacts.
 
 ## 5. Tech Stack
-Librerie e strumenti principali:
+Main libraries and tools:
 
 - Python
 - NumPy
@@ -60,58 +60,68 @@ Librerie e strumenti principali:
 - ephem
 
 ## 6. Repository Structure
-Script principali della pipeline:
+Main pipeline scripts (organized in `src/` folder):
 
-- 1_data_loading_and_geographic_filtering.py  
-  Caricamento dati grezzi e filtro geografico
+- src/1_data_loading_and_geographic_filtering.py  
+  Load raw data and apply geographic filtering
 
-- 2_masks_generation.py  
-  Generazione maschere giorno/notte, stagionali, terra/mare
+- src/2_masks_generation.py  
+  Generate day/night, seasonal, and land/sea masks
 
-- 3_histograms_analysis.py  
-  Analisi distribuzionale e istogrammi diagnostici
+- src/3_histograms_analysis.py  
+  Distributional analysis and diagnostic histograms
 
-- 4_dataset_balancing.py  
-  Bilanciamento dataset per configurazioni multi-classe
+- src/4_dataset_balancing.py  
+  Dataset balancing for multi-class configurations
 
-- 5.1_train_random_forest.py  
-  Training Random Forest per classificazione multi-classe
+- src/5.1_train_random_forest.py  
+  Random Forest training for multi-class classification
 
-- 5.2_train_xgboost_regression.py  
-  Regressione XGBoost per stima continua per intervalli di intensita
+- src/5.2_train_xgboost_regression.py  
+  XGBoost regression for continuous estimation across intensity ranges
 
-- 5.3_group_class_mappings.py  
-  Aggregazione classi 15 -> 7 -> 5 e report di valutazione
+- src/5.3_group_class_mappings.py  
+  Class aggregation 15 -> 7 -> 5 and evaluation reports
 
-- 6_ml_feature_engineering.py  
-  Costruzione feature avanzate e combinazioni di feature set
+- src/6_ml_feature_engineering.py  
+  Advanced feature construction and feature set combinations
 
-- 7_imerg_download_and_maps.py  
-  Download/processing IMERG e mappe di supporto
+- src/7_imerg_download_and_maps.py  
+  IMERG download/processing and support maps
 
-- 8_1_validation_preprocessing.py  
-  Preprocessing dedicato alla validazione finale
+- src/8_1_validation_preprocessing.py  
+  Preprocessing dedicated to final validation
 
-- 8_2_validation_features_model.py  
-  Feature e inferenza per il flusso di validazione
+- src/8_2_validation_features_model.py  
+  Features and inference for validation workflow
 
-- 8_3_validation_imerg.py  
-  Confronto finale contro IMERG e metriche aggregate
+- src/8_3_validation_imerg.py  
+  Final comparison against IMERG and aggregate metrics
 
-Contenuti aggiuntivi:
+## 7. Data Note
 
-- results/ con output sperimentali, metriche e figure
-- notebook esplorativi e file storici di sviluppo
+⚠️ **Input data is NOT included in this repository** for the following reasons:
 
-## 7. How to Run
-Istruzioni base:
+- **Size**: Input files (raw SEVIRI, IMERG, global masks) exceed several GB, being high-resolution satellite imagery for an entire year of observations.
+- **Seasonal Analysis**: The pipeline is designed to analyze seasonal variability, requiring complete year-round datasets.
+- **Simplification Difficulty**: Satellite maps cannot easily be reduced to "mini" versions while maintaining scientific-geographic significance.
 
-1. Creare e attivare un ambiente Python (consigliato virtual environment o Conda).
-2. Installare le dipendenze principali indicate nella sezione Tech Stack.
-3. Configurare path e flag RUN_... nella sezione Configuration di ogni script.
-4. Eseguire gli script in sequenza.
+To run the pipeline:
+1. Obtain raw SEVIRI data (.nat or NetCDF) from authorized providers (e.g., EUMETSAT)
+2. Download IMERG from https://gpm.nasa.gov/data
+3. Obtain global land/sea masks
+4. Place all files in `data/` folder following the structure expected by scripts
+5. Execute scripts sequentially from `src/1_*` to `src/8_*`
 
-Ordine consigliato:
+## 8. How to Run
+Basic instructions:
+
+1. Create and activate a Python environment (recommended: virtual environment or Conda).
+2. Install main dependencies listed in the Tech Stack section.
+3. Configure paths and RUN_... flags in the Configuration section of each script.
+4. Execute scripts in sequence.
+
+Recommended order:
 
 1. 1_data_loading_and_geographic_filtering.py
 2. 2_masks_generation.py
@@ -126,38 +136,38 @@ Ordine consigliato:
 11. 8_2_validation_features_model.py
 12. 8_3_validation_imerg.py
 
-## 8. Results
-La pipeline produce:
+## 9. Results
+The pipeline produces:
 
-- predizioni multi-classe dell'intensita di precipitazione;
-- matrici di confusione e report di classificazione;
-- metriche principali: accuracy, precision, recall, F1, HSS;
-- grafici e mappe geospaziali per analisi diagnostica.
+- multi-class predictions of precipitation intensity;
+- confusion matrices and classification reports;
+- main metrics: accuracy, precision, recall, F1, HSS;
+- graphs and geospatial maps for diagnostic analysis.
 
-Nota: in questo README non vengono riportati valori numerici specifici se non associati a run riproducibili documentate negli output.
+Note: specific numerical values are not reported in this README unless associated with reproducible runs documented in outputs.
 
-## 9. Key Features
-- Pipeline completa dal dato satellitare grezzo alla validazione esterna.
-- Supporto multi-configurazione classi (4, 5, 7, 15).
-- Feature engineering orientato a segnali spaziali/geofisici.
-- Struttura modulare che facilita debug, ri-esecuzione parziale e manutenzione.
-- Validazione contro prodotto indipendente (IMERG), non solo metriche interne al training.
+## 10. Key Features
+- Complete pipeline from raw satellite data to external validation.
+- Multi-class configuration support (4, 5, 7, 15).
+- Feature engineering oriented to spatial/geophysical signals.
+- Modular structure facilitating debugging, partial re-execution, and maintenance.
+- Validation against independent product (IMERG), not just internal training metrics.
 
-## 10. Limitations & Future Work
-Limiti attuali:
+## 11. Limitations & Future Work
+Current limitations:
 
-- orchestrazione script-based (non ancora impacchettata come pipeline unica);
-- sensibilita a qualita input, definizione classi e dominio geografico;
-- dipendenze geospaziali con setup talvolta complesso in ambienti eterogenei.
+- Script-based orchestration (not yet packaged as a single pipeline);
+- Sensitivity to input quality, class definition, and geographic domain;
+- Geospatial dependencies with sometimes complex setup in heterogeneous environments.
 
-Sviluppi futuri:
+Future developments:
 
-- tracking sistematico degli esperimenti e versionamento modelli;
-- tuning iperparametri strutturato;
-- stima incertezza e calibrazione probabilistica;
-- estensione a piu anni e aree geografiche;
-- packaging/containerizzazione per riproducibilita operativa.
+- Systematic experiment tracking and model versioning;
+- Structured hyperparameter tuning;
+- Uncertainty estimation and probabilistic calibration;
+- Extension to multiple years and geographic areas;
+- Packaging/containerization for operational reproducibility.
 
-## 11. Author
+## 12. Author
 Enric Rossi  
-Progetto di ambito machine learning e telerilevamento applicato alla classificazione della precipitazione da dati satellitari, con focus su robustezza del workflow, interpretabilita e validazione quantitativa.
+Machine learning and remote sensing applied to precipitation classification from satellite data, with focus on workflow robustness, interpretability, and quantitative validation.
